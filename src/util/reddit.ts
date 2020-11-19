@@ -1,14 +1,24 @@
 import fetch from 'node-fetch';
 
-export const getPosts = (subreddit: string, count = 5) => {
-    const url = `https://www.reddit.com/r/${subreddit}/hot/.json?count=${count}`;
+export interface RedditPostResponse {
+    kind: string;
+    data: RedditPost
+}
 
-    fetch(url, { method: 'GET' })
-        .then((res) => res.json())
-        .then((json) => {
-            const items = json.data.children.filter((x) => !x.data.is_self);
-            console.log(items[0]);
-        });
-};
+interface RedditPost {
+    title: string;
+    permalink: string;
+    author: string;
+    is_self: boolean;
+}
 
-
+export class Reddit {
+    getPosts(subreddit: string, callback: (posts: RedditPostResponse[]) => void, limit = 5) {
+        return fetch(`https://www.reddit.com/r/${subreddit}/hot/.json?limit=${limit}`, { method: 'GET' })
+            .then((res) => res.json())
+            .then((json) => {
+                const posts: RedditPostResponse[] = json.data.children.filter((post: RedditPostResponse) => !post.data.is_self);
+                callback(posts);
+            });
+    };
+}
