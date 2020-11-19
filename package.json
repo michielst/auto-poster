@@ -11,9 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/sharp": "^0.26.1",
     "dotenv": "^8.2.0",
     "instagram-web-api": "^2.2.2",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "sharp": "^0.26.3"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.7",

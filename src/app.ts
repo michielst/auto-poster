@@ -1,20 +1,31 @@
-import { Reddit, RedditPostResponse } from './util';
 import env from './env.config';
+import { Downloader, InstagramWrapper, Reddit, RedditPostResponse } from './util';
 
 class AutoPoster {
-    public reddit: Reddit;
+    private reddit: Reddit;
+    private instagram: InstagramWrapper;
+    private downloader: Downloader;
 
     constructor() {
         this.reddit = new Reddit();
+        this.instagram = new InstagramWrapper(env.instagramUsername, env.instagramPassword);
+        this.downloader = new Downloader();
     }
 
-    public run() {
-        this.reddit.getPosts(env.subreddit, (posts: RedditPostResponse[]) => {
+    public async run() {
+        this.reddit.getPosts(env.subreddit, 5).then(async posts => {
             posts.forEach(post => {
-                console.log(post.data.title)
-                console.log(post.data.permalink);
+                this.downloader.image(`${post.data.name}.jpg`, post.data.url)
+                    .then(filePath => {
+                        this.instagram.client.login().then(async () => {
+                            console.log('uploading to instagram...');
+                            await this.instagram.client.uploadPhoto({ photo: filePath, caption: post.data.title, post: 'feed' });
+                            console.log('done');
+                        });
+                    })
+                    .catch(console.error);
             });
-        });
+        }).catch(console.error);
     }
 }
 
