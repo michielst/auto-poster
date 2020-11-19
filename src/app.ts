@@ -18,8 +18,9 @@ class AutoPoster {
                 this.downloader.image(`${post.data.name}.jpg`, post.data.url)
                     .then(filePath => {
                         this.instagram.client.login().then(async () => {
-                            console.log('uploading to instagram...');
-                            await this.instagram.client.uploadPhoto({ photo: filePath, caption: post.data.title, post: 'feed' });
+                            console.log(`uploading ${filePath} to @${env.instagramUsername}...`);
+                            const caption = `${post.data.title} ${env.tags}`;
+                            await this.instagram.client.uploadPhoto({ photo: filePath, caption, post: 'feed' });
                             console.log('done');
                         });
                     })
