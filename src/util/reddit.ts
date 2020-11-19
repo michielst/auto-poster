@@ -13,12 +13,12 @@ interface RedditPost {
 }
 
 export class Reddit {
+    REDDIT_URL = 'https://www.reddit.com';
+
     getPosts(subreddit: string, callback: (posts: RedditPostResponse[]) => void, limit = 5) {
-        return fetch(`https://www.reddit.com/r/${subreddit}/hot/.json?limit=${limit}`, { method: 'GET' })
+        return fetch(`${this.REDDIT_URL}/r/${subreddit}/hot/.json?limit=${limit}`, { method: 'GET' })
             .then((res) => res.json())
-            .then((json) => {
-                const posts: RedditPostResponse[] = json.data.children.filter((post: RedditPostResponse) => !post.data.is_self);
-                callback(posts);
-            });
+            .then((json) => callback(json.data.children.filter((post: RedditPostResponse) => !post.data.is_self)))
+            .catch(console.error);
     };
 }
