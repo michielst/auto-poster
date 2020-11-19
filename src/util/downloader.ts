@@ -7,7 +7,7 @@ export class Downloader {
             const filePath = `downloads/${fileName}`;
             request({ url, encoding: null }, (error, response, body) => {
                 if (!error) {
-                    sharp(body).resize(1080, 1080).toFile(filePath)
+                    sharp(body).resize(1080, 1080, {fit: sharp.fit.contain}).toFile(filePath)
                     resolve(filePath);
                 }
 
