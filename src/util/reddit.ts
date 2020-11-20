@@ -1,18 +1,6 @@
 import fetch from 'node-fetch';
+import { RedditPostResponse } from '../models';
 
-export interface RedditPostResponse {
-    kind: string;
-    data: RedditPost
-}
-
-interface RedditPost {
-    title: string;
-    name: string;
-    permalink: string;
-    author: string;
-    is_self: boolean;
-    url: string;
-}
 
 export class Reddit {
     public REDDIT_URL = 'https://www.reddit.com';

@@ -105,3 +105,6 @@ dist
 
 # Downloads
 downloads/*
+
+# Database
+database.db

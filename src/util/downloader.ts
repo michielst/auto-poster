@@ -1,14 +1,10 @@
 import request from 'request';
 import sharp from 'sharp';
+import { DownloadedImage } from '../models';
 
-export interface DownloadedImage {
-    name: string;
-    fileName: string;
-    filePath: string;
-}
 
 export abstract class Downloader {
-    static downloadImage(name: string, extension: string, url: string): Promise<DownloadedImage> {
+    public static downloadImage(name: string, extension: string, url: string): Promise<DownloadedImage> {
         return new Promise((resolve, reject) => {
             const fileName = `${name}.${extension}`;
             const filePath = `downloads/${fileName}`;

@@ -1,9 +1,6 @@
 import Instagram from 'instagram-web-api';
+import { InstagramUploadType } from '../models';
 
-export enum InstagramUploadType {
-    Feed = 'feed',
-    Story = 'story'
-}
 
 export class InstagramWrapper {
     public client: Instagram;
