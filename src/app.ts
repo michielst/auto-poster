@@ -26,13 +26,14 @@ class AutoPoster {
                     this.instagram.client.login().then(() => {
                         images.forEach((image, index) => {
                             setTimeout(() => {
-                                const caption = filteredPosts.find(post => post.data.name === image.name).data.title;
+                                let caption = filteredPosts.find(post => post.data.name === image.name).data.title;
+                                caption = `${caption}  ${env.tags}`;
                                 console.log(`uploading ${image.fileName} to @${env.instagramUsername}...`);
                                 Promise.resolve(this.instagram.upload(image.filePath, caption, InstagramUploadType.Feed));
                                 if (env.postOnStory) {
                                     Promise.resolve(this.instagram.upload(image.filePath, caption, InstagramUploadType.Story));
                                 }
-                                this.database.insert(image.name, `${caption} ${env.tags}`, image.fileName).then().catch(console.error);
+                                this.database.insert(image.name, caption, image.fileName).then().catch(console.error);
                                 console.log(`uploaded ${image.filePath} to @${env.instagramUsername}!`);
                             }, (env.timeoutSeconds * 1000) * (index + 1));
                         });

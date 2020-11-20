@@ -8,5 +8,5 @@ export default {
     instagramPassword: process.env.INSTAGRAM_PASSWORD,
     tags: process.env.TAGS,
     timeoutSeconds: Number(process.env.TIMEOUT_SECONDS),
-    postOnStory: process.env.POST_ON_STORY
+    postOnStory: process.env.POST_ON_STORY === 'true' ? true : false
 };
