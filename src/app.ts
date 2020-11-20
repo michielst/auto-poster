@@ -1,31 +1,34 @@
 import env from './env.config';
-import { Downloader, InstagramWrapper, Reddit, RedditPostResponse } from './util';
+import { DownloadedImage, Downloader, InstagramWrapper, Reddit } from './util';
 
 class AutoPoster {
     private reddit: Reddit;
     private instagram: InstagramWrapper;
-    private downloader: Downloader;
 
     constructor() {
         this.reddit = new Reddit();
         this.instagram = new InstagramWrapper(env.instagramUsername, env.instagramPassword);
-        this.downloader = new Downloader();
     }
 
     public async run() {
-        this.reddit.getPosts(env.subreddit, 5).then(async posts => {
-            posts.forEach(post => {
-                this.downloader.image(`${post.data.name}.jpg`, post.data.url)
-                    .then(filePath => {
-                        this.instagram.client.login().then(async () => {
-                            console.log(`uploading ${filePath} to @${env.instagramUsername}...`);
-                            const caption = `${post.data.title} ${env.tags}`;
-                            await this.instagram.client.uploadPhoto({ photo: filePath, caption, post: 'feed' });
-                            console.log('done');
+        const posts$ = this.reddit.getPosts(env.subreddit, 10);
+        posts$.then(posts => {
+            const images$: Promise<DownloadedImage>[] = posts.map(post => Downloader.downloadImage(post.data.name, 'jpg', post.data.url));
+            Promise.all(images$)
+                .then(images => {
+                    console.log(`fetched ${images.length} images, starting upload...`);
+                    this.instagram.client.login().then(() => {
+                        images.forEach((image, index) => {
+                            setTimeout(async () => {
+                                const caption = posts.find(post => post.data.name === image.name).data.title;
+                                console.log(`uploading ${image.filePath} to @${env.instagramUsername}...`);
+                                await this.instagram.client.uploadPhoto({ photo: image.filePath, caption, post: 'feed' });
+                                console.log(`uploaded ${image.filePath} to @${env.instagramUsername}!`);
+                            }, (env.timeoutSeconds * 1000) * (index + 1));
                         });
-                    })
-                    .catch(console.error);
-            });
+                    });
+                })
+                .catch(console.error);
         }).catch(console.error);
     }
 }
