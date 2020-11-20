@@ -32,7 +32,7 @@ class AutoPoster {
                                 if (env.postOnStory) {
                                     Promise.resolve(this.instagram.upload(image.filePath, caption, InstagramUploadType.Story));
                                 }
-                                this.database.insert(image.name, caption, image.fileName).then().catch(console.error);
+                                this.database.insert(image.name, `${caption} ${env.tags}`, image.fileName).then().catch(console.error);
                                 console.log(`uploaded ${image.filePath} to @${env.instagramUsername}!`);
                             }, (env.timeoutSeconds * 1000) * (index + 1));
                         });
