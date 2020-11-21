@@ -16,8 +16,18 @@ export abstract class Downloader {
                     reject();
                 }
 
-                // sharp(body).metadata().then(console.log);
-                sharp(body).resize({ width: 1080, fit: sharp.fit.cover }).toFile(filePath);
+                const action = sharp(body);
+                action.metadata().then(metadata => {
+                    if (metadata.width <= 1080 && metadata.height > 1600) {
+                        action.resize(1080, 1080, { fit: sharp.fit.contain });
+                    } else if (metadata.width > 1080 && metadata.height < 500) {
+                        action.resize(1080, 1080, { fit: sharp.fit.contain });
+                    } else {
+                        action.resize({ width: 1080, fit: sharp.fit.cover });
+                    }
+
+                    action.toFile(filePath);
+                });
 
                 resolve(image);
             })
