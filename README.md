@@ -25,3 +25,17 @@
 npm install
 npm start
 ```
+
+### Setup via cron (linux)
+
+1. Make the cron scrip executable.
+
+```
+chmod +x /home/ubuntu/projects/auto-poster/cron.sh
+```
+
+Add this to your crontab using `crontab -e`. This will run the script every 12 hours.
+
+```
+0 */12 * * * sh /home/ubuntu/projects/auto-poster/cron.sh
+```
