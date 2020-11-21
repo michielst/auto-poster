@@ -1,5 +1,7 @@
 # auto-poster
 
+Automatically post images from a subreddit to an instagram account.
+
 ### Setup
 
 1. Create a copy of the `.env.example` file to `.env` and enter your environment variables.
@@ -34,7 +36,7 @@ npm start
 chmod +x /home/ubuntu/projects/auto-poster/cron.sh
 ```
 
-Add this to your crontab using `crontab -e`. This will run the script every 12 hours.
+2. Add this to your crontab using `crontab -e`. This will run the script every 12 hours.
 
 ```
 0 */12 * * * sh /home/ubuntu/projects/auto-poster/cron.sh
