@@ -1,6 +1,7 @@
 import { RedditInstagramPoster } from './scripts';
 import { Data } from './util';
 import { Config } from './util/config';
+import env from './env.config';
 
 
 class AutoPoster {
@@ -13,9 +14,11 @@ class AutoPoster {
     }
 
     public async run() {
-        this.config.settings.accounts.forEach(account => {
-            const redditInstagramPoster = new RedditInstagramPoster(this.database, account);
-            redditInstagramPoster.run();
+        this.config.settings.accounts.forEach((account, index) => {
+            setTimeout(() => {
+                const redditInstagramPoster = new RedditInstagramPoster(this.database, account);
+                redditInstagramPoster.run();
+            }, (env.timeoutInBetweenUploadsInSeconds * 1000) * (index + 1))
         });
     }
 }
