@@ -8,21 +8,18 @@ export abstract class Downloader {
         return new Promise((resolve, reject) => {
             const fileName = `${name}.${extension}`;
             const filePath = `downloads/${fileName}`;
+
             request({ url, encoding: null }, (error, response: any, body: any) => {
                 const image = { name, fileName, filePath } as DownloadedImage;
 
                 if (error) {
-                    reject(image);
+                    reject();
                 }
 
-                this.resize(body, filePath);
+                sharp(body).resize(1080, 1080, { fit: sharp.fit.contain }).toFile(filePath);
 
                 resolve(image);
             })
         });
-    }
-
-    private static resize(image: any, filePath: string) {
-        sharp(image).resize(1080, 1080, { fit: sharp.fit.contain }).toFile(filePath);
     }
 }

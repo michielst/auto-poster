@@ -11,4 +11,13 @@ interface RedditPost {
     is_self: boolean;
     url: string;
     score: number;
+    gallery_data: RedditGalleryData;
+}
+
+interface RedditGalleryData {
+    items: RedditGalleryDataItem[];
+}
+
+interface RedditGalleryDataItem {
+    media_id: string;
 }
