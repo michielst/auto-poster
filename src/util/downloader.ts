@@ -23,7 +23,7 @@ export abstract class Downloader {
                     } else if (metadata.width <= 1080 && metadata.height > 1350) {
                         action.resize(1080, 1080, { fit: sharp.fit.contain });
                     } else if (metadata.width > 1080 && metadata.height > 1080) {
-                        action.resize({ width: 1080, fit: sharp.fit.contain });
+                        action.resize({ width: 1080, height: 1350, fit: sharp.fit.contain });
                     } else if (metadata.width > 1080) {
                         action.resize(1080, 1080, { fit: sharp.fit.contain });
                     } else {
