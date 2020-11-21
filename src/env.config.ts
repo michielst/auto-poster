@@ -7,6 +7,7 @@ export default {
     instagramUsername: process.env.INSTAGRAM_USERNAME,
     instagramPassword: process.env.INSTAGRAM_PASSWORD,
     tags: process.env.TAGS,
+    uploadsCount: Number(process.env.UPLOADS_COUNT),
     timeoutSeconds: Number(process.env.TIMEOUT_SECONDS),
     postOnStory: process.env.POST_ON_STORY === 'true' ? true : false
 };

@@ -5,7 +5,7 @@ import { RedditPostResponse } from '../models';
 export class Reddit {
     public REDDIT_URL = 'https://www.reddit.com';
 
-    getPosts(subreddit, limit = 20): Promise<RedditPostResponse[]> {
+    getPosts(subreddit, limit = 10): Promise<RedditPostResponse[]> {
         return new Promise(async (resolve, reject) => {
             fetch(`${this.REDDIT_URL}/r/${subreddit}/top/.json?t=day&limit=${limit}`, { method: 'GET' })
                 .then(res => res.json())

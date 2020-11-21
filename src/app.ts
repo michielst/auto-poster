@@ -14,11 +14,12 @@ class AutoPoster {
     }
 
     public async run() {
-        const posts$ = this.reddit.getPosts(env.subreddit, 10);
+        const posts$ = this.reddit.getPosts(env.subreddit);
         posts$.then(posts => {
             this.database.all().then((uploads: InstagramUpload[]) => {
                 const uniqueIds = uploads.map(x => x.unique_id);
-                const filteredPosts = posts.filter(post => !uniqueIds.includes(post.data.name));
+                const filteredPosts = posts.filter(post => !uniqueIds.includes(post.data.name)).slice(0, env.uploadsCount);
+
                 const images$: Promise<DownloadedImage>[] = filteredPosts.map(post => Downloader.downloadImage(post.data.name, 'jpg', post.data.url));
 
                 Promise.all(images$).then(images => {

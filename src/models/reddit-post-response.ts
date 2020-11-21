@@ -10,4 +10,5 @@ interface RedditPost {
     author: string;
     is_self: boolean;
     url: string;
+    score: number;
 }
