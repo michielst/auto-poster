@@ -108,3 +108,6 @@ downloads/*
 
 # Database
 database.db
+
+# Settings
+settings.json
