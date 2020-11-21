@@ -1,0 +1,11 @@
+{
+    "accounts": [
+        {
+            "instagramUsername": "",
+            "instagramPassword": "",
+            "subreddit": "",
+            "tags": "",
+            "postOnStory": false
+        }
+    ]
+}
