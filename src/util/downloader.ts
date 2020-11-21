@@ -16,7 +16,7 @@ export abstract class Downloader {
                     reject();
                 }
 
-                sharp(body).resize(1080, 1080, { fit: sharp.fit.contain }).toFile(filePath);
+                sharp(body).resize({ width: 1080, fit: sharp.fit.contain }).toFile(filePath);
 
                 resolve(image);
             })
