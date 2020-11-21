@@ -47,7 +47,8 @@ export class RedditInstagramPoster {
                             }
                             this.database.insert(image.name, caption, image.fileName).then().catch(console.error);
                             console.log(`uploaded ${image.filePath} to @${this.account.instagramUsername}!`);
-                        }, (env.timeoutInBetweenUploadsInSeconds * 1000) * (index + 1));
+                            console.log(`waiting ${env.timeoutInBetweenUploadsInSeconds} seconds before starting next upload.`);
+                        }, (env.timeoutInBetweenUploadsInSeconds * 1000) * ((index - 1) + 1));
                     });
                 });
             }

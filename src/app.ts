@@ -18,7 +18,7 @@ class AutoPoster {
             setTimeout(() => {
                 const redditInstagramPoster = new RedditInstagramPoster(this.database, account);
                 redditInstagramPoster.run();
-            }, (env.timeoutInBetweenUploadsInSeconds * 1000) * (index + 1))
+            }, (env.timeoutInBetweenUploadsInSeconds * 1000) * ((index - 1) + 1))
         });
     }
 }
