@@ -12,7 +12,7 @@ export class Reddit {
 
     getPosts(limit = 50): Promise<RedditPostResponse[]> {
         return new Promise(async (resolve, reject) => {
-            fetch(`${this.REDDIT_URL}/r/${this.subreddit}/top/.json?t=day&limit=${limit}`, { method: 'GET' })
+            fetch(`${this.REDDIT_URL}/r/${this.subreddit}/top/.json?t=week&limit=${limit}`, { method: 'GET' })
                 .then(res => res.json())
                 .then(json => resolve(json.data.children.filter((post: RedditPostResponse) => !post.data.is_self)))
                 .catch(reject);
