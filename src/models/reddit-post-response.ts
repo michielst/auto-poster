@@ -9,6 +9,7 @@ interface RedditPost {
     permalink: string;
     author: string;
     is_self: boolean;
+    is_video: boolean;
     url: string;
     score: number;
     gallery_data: RedditGalleryData;
