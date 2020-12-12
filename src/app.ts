@@ -14,10 +14,13 @@ class AutoPoster {
     }
 
     public async run() {
+        const limit = (12 * 7) * this.config.settings.accounts.length;
+        const posts = await this.database.all(limit);
+
         this.config.settings.accounts.forEach((account, index) => {
             setTimeout(() => {
                 const redditInstagramPoster = new RedditInstagramPoster(this.database, account);
-                redditInstagramPoster.run();
+                redditInstagramPoster.run(posts);
             }, ((env.timeoutInBetweenUploadsInSeconds * env.uploadsPerScriptRun) * 1000) * ((index - 1) + 1))
         });
     }

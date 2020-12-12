@@ -10,7 +10,7 @@ export class Reddit {
         this.subreddit = subreddit;
     }
 
-    getPosts(limit = 50): Promise<RedditPostResponse[]> {
+    getPosts(limit = 100): Promise<RedditPostResponse[]> {
         return new Promise(async (resolve, reject) => {
             fetch(`${this.REDDIT_URL}/r/${this.subreddit}/top/.json?t=week&limit=${limit}`, { method: 'GET' })
                 .then(res => res.json())

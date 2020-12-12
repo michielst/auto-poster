@@ -16,6 +16,8 @@ export abstract class Downloader {
                     reject();
                 }
 
+                // sharp(body).toFile(`downloads/${name}_original.jpg`);
+
                 const action = sharp(body);
                 action.metadata().then(metadata => {
                     if (metadata.width < 1080) {

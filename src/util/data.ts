@@ -24,7 +24,7 @@ export class Data {
         });
     }
 
-    all(): Promise<InstagramUpload[]> {
+    all(limit: number = 100): Promise<InstagramUpload[]> {
         return new Promise<InstagramUpload[]>((resolve, reject) => {
             const db = new Database(env.database, (err) => {
                 if (err) {
@@ -34,7 +34,7 @@ export class Data {
             });
 
             db.serialize(() => {
-                db.all(`select * from instagram_uploads`, (error, results: InstagramUpload[]) => {
+                db.all(`select * from instagram_uploads order by id desc limit ${limit}`, (error, results: InstagramUpload[]) => {
                     if (error) {
                         reject(error);
                     }
