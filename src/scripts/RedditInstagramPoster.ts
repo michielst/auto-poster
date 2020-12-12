@@ -37,7 +37,6 @@ export class RedditInstagramPoster {
 
     private async uploadRedditPostsToInstagram(posts: RedditPostResponse[]) {
         const images$: Promise<DownloadedImage>[] = posts.map(post => Downloader.downloadImage(post.data.name, 'jpg', this.getImageUrl(post)));
-
         const images = await Promise.all(images$);
 
         if (images.length === 0) {
@@ -45,12 +44,19 @@ export class RedditInstagramPoster {
         }
 
         console.log(`fetched ${images.length} images, starting upload...`);
-
         this.instagram.client.login().then(() => {
             images.forEach((image, index) => {
                 setTimeout(async () => {
-                    let caption = posts.find(post => post.data.name === image.name).data.title;
-                    caption = `${caption}  ${this.account.tags}`;
+                    const post = posts.find(post => post.data.name === image.name);
+                    let caption = post.data.title;
+                    caption = `${caption} 
+                    
+-
+-
+-
+author: u/${post.data.author}
+thread: https://reddit.com${post.data.permalink}
+${this.account.tags}`;
 
                     console.log(`uploading ${image.fileName} to @${this.account.instagramUsername}...`);
 
