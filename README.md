@@ -15,7 +15,8 @@ Automatically post images from a subreddit to an instagram account.
             "instagramPassword": "",
             "subreddit": "",
             "tags": "",
-            "postOnStory": false
+            "postOnStory": false,
+            "credits": true
         }
     ]
 }
