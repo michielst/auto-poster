@@ -49,19 +49,28 @@ export class RedditInstagramPoster {
                 setTimeout(async () => {
                     const post = posts.find(post => post.data.name === image.name);
                     let caption = post.data.title;
-                    caption = `${caption} 
-                    
+
+                    if (this.account.credits) {
+                        caption = `${caption} 
+                        
 -
 -
 -
 author: u/${post.data.author}
 thread: https://reddit.com${post.data.permalink}
 ${this.account.tags}`;
+                    } else {
+                        caption = `${caption} 
+-
+-
+-
+${this.account.tags}`;
+                    }
 
                     console.log(`uploading ${image.fileName} to @${this.account.instagramUsername}...`);
 
                     await this.instagram.upload(image.filePath, caption, InstagramUploadType.Feed);
-                    console.log(`uploaded ${image.filePath} to @${this.account.instagramUsername}!`);
+                    console.log(`uploaded ${image.filePath} to @${this.account.instagramUsername} !`);
 
                     if (this.account.postOnStory) {
                         await this.instagram.upload(image.filePath, caption, InstagramUploadType.Story);

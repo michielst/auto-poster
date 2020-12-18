@@ -11,6 +11,7 @@ export interface Account {
     subreddit: string;
     tags: string;
     postOnStory: boolean;
+    credits: boolean;
 }
 
 export class Config {
