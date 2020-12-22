@@ -21,6 +21,11 @@ export class RedditInstagramPoster {
         console.log(`Starting RedditInstagramPoster => @${this.account.instagramUsername}`)
         const posts = await this.reddit.getPosts();
 
+        if (posts.length == 0) {
+            console.error('no reddit posts found.');
+            return;
+        }
+
         let uploads = [];
         if (databaseUploads) {
             uploads = databaseUploads;
@@ -31,6 +36,10 @@ export class RedditInstagramPoster {
         const filteredPosts = posts
             .filter(post => !uploads.map(x => x.unique_id).includes(post.data.name))
             .slice(0, env.uploadsPerScriptRun);
+
+        if (filteredPosts.length === 0) {
+            return;
+        }
 
         await this.uploadRedditPostsToInstagram(filteredPosts);
     }
@@ -50,6 +59,8 @@ export class RedditInstagramPoster {
                     const post = posts.find(post => post.data.name === image.name);
                     let caption = post.data.title;
 
+                    console.log(caption);
+
                     if (this.account.credits) {
                         caption = `${caption} 
                         
@@ -62,15 +73,13 @@ ${this.account.tags}`;
                     } else {
                         caption = `${caption} 
 -
--
--
 ${this.account.tags}`;
                     }
 
                     console.log(`uploading ${image.fileName} to @${this.account.instagramUsername}...`);
 
                     await this.instagram.upload(image.filePath, caption, InstagramUploadType.Feed);
-                    console.log(`uploaded ${image.filePath} to @${this.account.instagramUsername} !`);
+                    console.log(`uploaded ${image.filePath} to @${this.account.instagramUsername}`);
 
                     if (this.account.postOnStory) {
                         await this.instagram.upload(image.filePath, caption, InstagramUploadType.Story);
