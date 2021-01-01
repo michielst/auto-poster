@@ -53,45 +53,10 @@ export class RedditInstagramPoster {
         }
 
         console.log(`fetched ${images.length} images, starting upload...`);
-        this.instagram.client.login().then(() => {
-            images.forEach((image, index) => {
-                setTimeout(async () => {
-                    const post = posts.find(post => post.data.name === image.name);
-                    let caption = post.data.title;
 
-                    console.log(caption);
-
-                    if (this.account.credits) {
-                        caption = `${caption} 
-                        
--
--
--
-author: u/${post.data.author}
-thread: https://reddit.com${post.data.permalink}
-${this.account.tags}`;
-                    } else {
-                        caption = `${caption} 
--
-${this.account.tags}`;
-                    }
-
-                    console.log(`uploading ${image.fileName} to @${this.account.instagramUsername}...`);
-
-                    await this.instagram.upload(image.filePath, caption, InstagramUploadType.Feed);
-                    console.log(`uploaded ${image.filePath} to @${this.account.instagramUsername}`);
-
-                    if (this.account.postOnStory) {
-                        await this.instagram.upload(image.filePath, caption, InstagramUploadType.Story);
-                    }
-
-                    await this.database.insert(image.name, caption, image.fileName);
-                    console.log(`inserted ${image.fileName} into database`);
-
-                    console.log(`waiting ${env.timeoutInBetweenUploadsInSeconds} seconds before starting next upload.`);
-                }, (env.timeoutInBetweenUploadsInSeconds * 1000) * ((index - 1) + 1));
-            });
-        });
+        await this.instagram.client.login()
+            .then(() => this.onInstagramLoginSuccess(posts, images))
+            .catch((response: any) => this.instagram.onInstagramLoginError(response.error));
     }
 
     private getImageUrl(redditPost: RedditPostResponse) {
@@ -102,5 +67,45 @@ ${this.account.tags}`;
         }
 
         return imageUrl;
+    }
+
+    private async onInstagramLoginSuccess(posts, images) {
+        images.forEach(async (image, index) => {
+            await setTimeout(async () => {
+                const post = posts.find(post => post.data.name === image.name);
+                let caption = post.data.title;
+
+                console.log(caption);
+
+                if (this.account.credits) {
+                    caption = `${caption} 
+
+            -
+            -
+            -
+            author: u/${post.data.author}
+            thread: https://reddit.com${post.data.permalink}
+            ${this.account.tags}`;
+                } else {
+                    caption = `${caption} 
+            -
+            ${this.account.tags}`;
+                }
+
+                console.log(`uploading ${image.fileName} to @${this.account.instagramUsername}...`);
+
+                const { media } = await this.instagram.upload(image.filePath, caption, InstagramUploadType.Feed);
+                console.log(`uploaded ${image.filePath} to @${this.account.instagramUsername} (${media.code})`);
+
+                if (this.account.postOnStory) {
+                    await this.instagram.upload(image.filePath, caption, InstagramUploadType.Story);
+                }
+
+                await this.database.insert(image.name, caption, image.fileName);
+                console.log(`inserted ${image.fileName} into database`);
+
+                console.log(`waiting ${env.timeoutInBetweenUploadsInSeconds} seconds before starting next upload.`);
+            }, (env.timeoutInBetweenUploadsInSeconds * 1000) * ((index - 1) + 1));
+        });
     }
 }
