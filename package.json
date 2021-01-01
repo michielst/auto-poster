@@ -17,7 +17,8 @@
     "instagram-web-api": "^2.2.2",
     "node-fetch": "^2.6.1",
     "sharp": "^0.26.3",
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^5.0.0",
+    "tough-cookie-filestore2": "^1.0.0"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.5.7",
