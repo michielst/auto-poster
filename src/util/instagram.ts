@@ -33,11 +33,6 @@ export class InstagramWrapper {
             return;
         }
 
-        if (error.status === 'fail') {
-            console.log('No checkpoint_url in', error);
-            return;
-        }
-
         this.client.updateChallenge({ challengeUrl: error.checkpoint_url, choice: 1 }).then(res => {
             readline.question('Enter the verification code from the instagram verification email:', async securityCode => {
                 if (securityCode) {
