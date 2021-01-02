@@ -25,7 +25,7 @@ export class InstagramWrapper {
 
         if (error.status === 'fail') {
             console.log('No checkpoint_url in', error);
-            process.exit();
+            return;
         }
 
         this.client.updateChallenge({ challengeUrl: error.checkpoint_url, choice: 1 }).then(res => {
