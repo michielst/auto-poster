@@ -22,8 +22,9 @@ export class InstagramWrapper {
 
     public onInstagramLoginError(error) {
         console.log('Requesting verification code via email.');
+        console.log(error);
 
-        if (error.status === 'fail') {
+        if (error.status && error.status === 'fail') {
             console.log('No checkpoint_url in', error);
             return;
         }
