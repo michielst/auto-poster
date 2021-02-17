@@ -112,4 +112,4 @@ database.db
 # Settings
 settings.json
 
-cookies.json
+cookies/
