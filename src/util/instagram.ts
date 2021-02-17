@@ -9,7 +9,7 @@ export class InstagramWrapper {
 
     constructor(username: string, password: string) {
         if (envConfig.useCookieStore) {
-            const cookieStore = new FileCookieStore(`./${username}_cookies.json`)
+            const cookieStore = new FileCookieStore(`./cookies/${username}_cookies.json`)
             this.client = new Instagram({ username, password, cookieStore });
         } else {
             this.client = new Instagram({ username, password });
