@@ -22,29 +22,29 @@ export class InstagramWrapper {
 
     public onInstagramLoginError(error) {
         console.log(error);
-        // console.log('Requesting verification code via email.');
+        console.log('Requesting verification code via email.');
 
-        // if (!error) {
-        //     return;
-        // }
+        if (!error) {
+            return;
+        }
 
-        // const rl = readline.createInterface({
-        //     input: process.stdin,
-        //     output: process.stdout
-        // });
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
 
-        // this.client.updateChallenge({ challengeUrl: error.checkpoint_url, choice: 1 }).then(res => {
-        //     rl.question('Enter the verification code from the instagram verification email:', async securityCode => {
-        //         if (securityCode) {
-        //             console.log(`Sending ${securityCode} as verification request.`)
-        //             this.client.updateChallenge({ challengeUrl: error.checkpoint_url, securityCode }).then(async result => {
-        //                 rl.close();
-        //                 this.client.logout().then(res => console.log(res)).catch(err => console.log(err));
-        //             }).catch(err => console.log(err));
-        //         }
+        this.client.updateChallenge({ challengeUrl: error.checkpoint_url, choice: 1 }).then(res => {
+            rl.question('Enter the verification code from the instagram verification email:', async securityCode => {
+                if (securityCode) {
+                    console.log(`Sending ${securityCode} as verification request.`)
+                    this.client.updateChallenge({ challengeUrl: error.checkpoint_url, securityCode }).then(async result => {
+                        rl.close();
+                        this.client.logout().then(res => console.log(res)).catch(err => console.log(err));
+                    }).catch(err => console.log(err));
+                }
 
-        //         rl.close();
-        //     });
-        // });
+                rl.close();
+            });
+        });
     }
 }
