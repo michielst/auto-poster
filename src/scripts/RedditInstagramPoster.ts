@@ -1,8 +1,10 @@
 import env from '../env.config';
 import { DownloadedImage, InstagramUpload, InstagramUploadType, RedditPostResponse } from "../models";
-import { Data, Downloader, InstagramWrapper, Reddit } from "../util";
 import { Account } from '../util/config';
-
+import { Data } from '../util/data';
+import { Downloader } from '../util/downloader';
+import { InstagramWrapper } from "../util/instagram";
+import { Reddit } from "../util/reddit";
 
 export class RedditInstagramPoster {
     private database: Data;
@@ -21,7 +23,7 @@ export class RedditInstagramPoster {
         console.log(`Starting RedditInstagramPoster => @${this.account.instagramUsername}`)
         const posts = await this.reddit.getPosts();
 
-        if (posts.length == 0) {
+        if (posts.length === 0) {
             console.error('no reddit posts found.');
             return;
         }

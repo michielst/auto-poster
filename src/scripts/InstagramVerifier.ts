@@ -1,4 +1,5 @@
-import { Config, InstagramWrapper } from "../util";
+import { Config } from "../util/config";
+import { InstagramWrapper } from "../util/instagram";
 
 
 class InstagramVerifier {
