@@ -80,13 +80,11 @@ export class RedditInstagramPoster {
                 console.log(caption);
 
                 if (this.account.credits) {
-                    caption = `${caption} 
+                    caption = `${caption}
 
+                    For more follow @${this.account.instagramUsername}
             -
-            -
-            -
-            author: u/${post.data.author}
-            thread: https://reddit.com${post.data.permalink}
+            source: https://reddit.com${post.data.permalink}
             ${this.account.tags}`;
                 } else {
                     caption = `${caption} 
